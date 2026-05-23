@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import logging
 from typing import List, Optional
@@ -150,6 +151,11 @@ async def chat(req: ChatRequest):
             if cleaned.startswith("json"):
                 cleaned = cleaned[4:]
         cleaned = cleaned.strip()
+
+        # Fallback: extract JSON block if there's extra text around it
+        match = re.search(r'(\{.*\})', cleaned, re.DOTALL)
+        if match:
+            cleaned = match.group(1)
 
         data = json.loads(cleaned)
     except json.JSONDecodeError as e:
