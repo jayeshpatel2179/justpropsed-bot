@@ -135,6 +135,7 @@ async def chat(req: ChatRequest):
             messages=messages,
             max_tokens=500,
             temperature=0.4,
+            response_format={"type": "json_object"},
         )
         raw = completion.choices[0].message.content.strip()
         logger.info("AI raw response: %s", raw)
